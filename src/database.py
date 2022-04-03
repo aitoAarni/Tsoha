@@ -35,7 +35,7 @@ def get_msg_chains(id):
 
 def create_msg_chain(header, user, area):
     if isinstance(area, str):
-        area = db.session.execute(f"SELECT id FROM areas WHERE name='{area}';").fetchone()[0]
+        area = db.session.execute(f"SELECT id FROM areas WHERE name='{area}' ;").fetchone()[0]
     if 0 < len(header) < 150:
         header = tools.character_escape(header)
         db.session.execute(f"INSERT INTO message_chains (header, user_id, area_id, visible)"
@@ -67,9 +67,9 @@ def get_messages(chain):
 
 
 def check_if_value_exists(table, column, value):
-    query = db.session.execute(f"SELECT count(1)>0 FROM {table} WHERE {column}='{value}';")
-    return query.fetchone()[0]
-    
+    #query = db.session.execute(f"SELECT count(1)>0 FROM {table} WHERE {column}='{value}';")
+    #return query.fetchone()[0]
+    return False
 
 if __name__ == '__main__':
     create_message("I thinking that budhda ought to be the best", 1, 1)
