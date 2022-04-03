@@ -5,7 +5,7 @@ from datetime import datetime
 import src.tools as tools
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///aare' #getenv('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URL') # 'postgresql:///aare'
 db = SQLAlchemy(app)
 
 def create_area(name):
