@@ -3,9 +3,16 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import src.tools as tools
+import os
+import re
+
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+# rest of connection code using the connection string `uri`
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URL') # 'postgresql:///aare'
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 db = SQLAlchemy(app)
 
 def create_area(name):
