@@ -1,7 +1,9 @@
-<p>Viestin määrä: {{count}}</p>
+<h1>Discussion sections</h1>
+
+
 <hr>
-{% for message in messages %}
-{{message.content}}
+    {% for area in areas %}
+    <a href="area/{{area.id}}">{{area.name}}</a>
 <hr>
 {% endfor %}
-<a href="/new">Lähetä viesti</a>
+

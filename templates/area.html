@@ -1,0 +1,16 @@
+<h1>Discussion sections</h1>
+
+<hr>
+    <p> create a new message chain </p>
+    <form action="/new_chain/{{id}}" method="POST">
+        <input type="text" placeholder="Type message chain header" name="header">
+        <input type="submit" value="create">
+    </form>
+<hr>
+<br\>
+
+<hr>
+{% for message_chain in message_chains %}
+<a href="/message_chain/{{message_chain.id}}">{{message_chain.header}}</a>
+<hr>
+{% endfor %}
