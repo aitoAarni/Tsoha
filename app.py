@@ -1,5 +1,3 @@
-from cgitb import text
-from turtle import title
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
