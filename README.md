@@ -8,3 +8,9 @@
 - Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
 - Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
 - Ylläpitäjä voi luoda salaisen alueen ja määrittää, keillä käyttäjillä on pääsy alueelle.
+
+## Välipalautus 2
+- testattavissa: https://communicationarea.herokuapp.com/
+- sivustolla voi aiheita
+- voi luoda keskustelu ketjuja
+- ketjuihin voi lähettää viestejä
