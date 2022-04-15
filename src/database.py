@@ -1,3 +1,4 @@
+from email import message
 from os import getenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -22,10 +23,13 @@ def get_areas():
     areas = result.fetchall()
     return areas
 
-def get_msg_chains(id):
-    sql = "SELECT M.header, M.id, U.username, U.id AS user_id FROM message_chains M, users U WHERE M.area_id=:id and M.visible=true;"
-    query = db.session.execute(sql, {'id': id})
+def get_msg_chains(id, user_id):
+    sql = "SELECT M.header, M.id, U.username, U.id=:user_id AS owned FROM users U " \
+            "LEFT JOIN message_chains M ON M.user_id=U.id WHERE M.area_id=:id and M.visible=true;"
+    query = db.session.execute(sql, {'id': id, "user_id": user_id})
     message_chains = query.fetchall()
+    print(user_id)
+    print(message_chains)
     return message_chains
 
 def create_msg_chain(header, user, area):
@@ -50,19 +54,15 @@ def create_message(message, user, chain):
         return True
     return False
 
-def get_messages(chain):
+def get_messages(chain, user_id):
     if isinstance(chain, str):
         chain = db.session.execute(f"SELECT id FROM message_chains WHERE header='{chain}';").fetchone()[0]
-    query = db.session.execute(f"SELECT content, to_char(time, 'DD-MM-YYYY HH24:MI') FROM"
-                                f" messages WHERE chain_id={chain} and visible=true ORDER BY time DESC;")
+    sql = "SELECT M.content, to_char(M.time, 'DD-MM-YYYY HH24:MI'), " \
+            "U.username, U.id=:user_id AS owned FROM users U" \
+            " LEFT JOIN messages M ON M.user_id=U.id WHERE M.chain_id=:chain and M.visible=true ORDER BY M.time DESC;"
+    query = db.session.execute(sql, {"chain": chain, "user_id": user_id})
     messages = query.fetchall()
     return messages
-
-
-def check_if_value_exists(table, column, value):
-    #query = db.session.execute(f"SELECT count(1)>0 FROM {table} WHERE {column}='{value}';")
-    #return query.fetchone()[0]
-    return False
 
 def username_exists(username):
     sql = 'SELECT password, id, moderator FROM users where username=:username'

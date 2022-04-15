@@ -8,6 +8,13 @@ def new_message(message, chain_id):
     database.create_message(message, session['id'], chain_id)
     return True
 
+def get_messages(chain):
+    return database.get_messages(chain, user_id())
+    
+
+def get_chains(area):
+    return database.get_msg_chains(area, user_id())
+
 def new_message_chain(header, chain_id):
     if len(header) > 100:
         return False
@@ -21,6 +28,7 @@ def log_in(name, password):
     if check_password_hash(user.password, password):
         session['id'] = user.id
         session['mod'] = user.moderator
+        print(session)
 
         return True
     return False
@@ -41,6 +49,9 @@ def logged_in():
     if 'id' in session:
         return True
     return False
+
+def user_id():
+    return session.get('id', 0)
 
 def log_out():
     del session['id']

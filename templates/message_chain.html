@@ -4,19 +4,20 @@
 {% block content %}
 <h1>Message chain</h1>
 
-<hr>
     <p> comment: </p>
     <form action="#" method="POST">
         <textarea name="message" placeholder="Type new message here"  rows="3" cols="45" maxlength="1000" required></textarea>
         <input type="submit" value="post">
     </form>
-<hr>
 <br\>
 
 <hr>
 {% for message in messages %}
     <p>{{message.content}}</p>
-    <p class="meta">{{message[1]}}</p>
+    <p class="meta"> sent by {{message.username}} at {{message[1]}}</p>
+    {% if message.owned %}
+    <p>delete</p>
+    {% endif %}
 <hr>
 {% endfor %}
 {% endblock %}

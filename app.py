@@ -31,7 +31,7 @@ def areas(id):
         success = tools.new_message_chain(request.form['header'], id)
         if not success:
             return redirect(url_for('error', name='This chain already exists or too long name'))
-    message_chains = database.get_msg_chains(id)
+    message_chains = tools.get_chains(id)
     return render_template(f'area.html', message_chains=message_chains, id=id, logged=tools.logged_in())
 
 
@@ -41,7 +41,7 @@ def message_chain(id):
         success = tools.new_message(request.form["message"], id)
         if not success:
             return redirect(url_for('error', name='message too long'))
-    messages = database.get_messages(id)
+    messages = tools.get_messages(id)
     return render_template('message_chain.html', messages=messages, id=id, logged=tools.logged_in())
 
 

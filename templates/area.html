@@ -14,7 +14,7 @@
 <hr>
 {% for message_chain in message_chains %}
 <p><a href="/message_chain/{{message_chain.id}}">{{message_chain.header}}</a> created by {{message_chain.username}}</p>
-{% if  %}
+{% if message_chain.owned %}
 <p>delete</p>
 {% endif %}
 <hr>
