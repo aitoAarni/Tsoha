@@ -1,12 +1,9 @@
 from os import getenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-import src.tools as tools
-import os
-import re
 
-uri = os.getenv("DATABASE_URL")  # or other relevant config var
+uri = getenv("DATABASE_URL")  # or other relevant config var
+print(uri)
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 # rest of connection code using the connection string `uri`
@@ -16,11 +13,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = uri
 db = SQLAlchemy(app)
 
 def create_area(name):
-    try:
-        db.session.execute(f"INSERT INTO areas (name) VALUES ('{name}');")
-        return True
-    except:
-        return False
+    sql = f"INSERT INTO areas (name) VALUES (:name);"
+    db.session.execute(sql, {"name": name})
 
 
 def get_areas():
@@ -29,7 +23,8 @@ def get_areas():
     return areas
 
 def get_msg_chains(id):
-    query = db.session.execute(f"SELECT header, id FROM message_chains WHERE area_id={id} and visible=true;")
+    sql = "SELECT M.header, M.id, U.username, U.id AS user_id FROM message_chains M, users U WHERE M.area_id=:id and M.visible=true;"
+    query = db.session.execute(sql, {'id': id})
     message_chains = query.fetchall()
     return message_chains
 
@@ -37,22 +32,20 @@ def create_msg_chain(header, user, area):
     if isinstance(area, str):
         area = db.session.execute(f"SELECT id FROM areas WHERE name='{area}' ;").fetchone()[0]
     if 0 < len(header) < 150:
-        header = tools.character_escape(header)
-        db.session.execute(f"INSERT INTO message_chains (header, user_id, area_id, visible)"
-                        f" VALUES ('{header}', {user}, {area}, true);")
+        sql = f"INSERT INTO message_chains (header, user_id, area_id, visible)" \
+                f" VALUES (:header, :user, :area, true);"
+        db.session.execute(sql, {"header":header, "user":user, "area":area})
         db.session.commit()
         return True
 
 
 def create_message(message, user, chain):
-    now = datetime.now()
-    time = f"{now.year}-{now.month}-{now.day} {now.hour}:{now.minute}"
     if isinstance(chain, str):
         chain = db.session.execute(f"SELECT id FROM message_chains WHERE header='{chain}';").fetchone()[0]
     if 0 < len(message) < 1000:        
-        message = tools.character_escape(message)
-        db.session.execute(f"INSERT INTO messages (content, user_id, chain_id, posting_date)"
-                           f" VALUES ('{message}', {user}, {chain}, '{time}');")
+        sql = f"INSERT INTO messages (content, user_id, chain_id)" \
+                f" VALUES (:message, :user, :chain);"
+        db.session.execute(sql, {"message": message, "user": user, "chain": chain})
         db.session.commit()
         return True
     return False
@@ -60,8 +53,8 @@ def create_message(message, user, chain):
 def get_messages(chain):
     if isinstance(chain, str):
         chain = db.session.execute(f"SELECT id FROM message_chains WHERE header='{chain}';").fetchone()[0]
-    query = db.session.execute(f"SELECT content, posting_date FROM"
-                                f" messages WHERE chain_id={chain} and visible=true;")
+    query = db.session.execute(f"SELECT content, to_char(time, 'DD-MM-YYYY HH24:MI') FROM"
+                                f" messages WHERE chain_id={chain} and visible=true ORDER BY time DESC;")
     messages = query.fetchall()
     return messages
 
@@ -71,5 +64,18 @@ def check_if_value_exists(table, column, value):
     #return query.fetchone()[0]
     return False
 
-if __name__ == '__main__':
-    create_message("I thinking that budhda ought to be the best", 1, 1)
+def username_exists(username):
+    sql = 'SELECT password, id, moderator FROM users where username=:username'
+    query = db.session.execute(sql, {'username': username})
+    user_info = query.fetchone()
+    return user_info
+
+def add_user(username, password, mod=False):
+    sql = 'INSERT INTO users (username, password, moderator) VALUES (:username, :password, :moderator)'
+    try:
+        db.session.execute(sql, {'username': username, 'password': password, 'moderator': mod})
+        db.session.commit()
+        return True
+    except:
+        print('error while trying to create an user')
+        return False

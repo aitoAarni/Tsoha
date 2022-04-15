@@ -1,16 +1,22 @@
+{% extends "base.html" %}
+{% block user_id %}{{user_id}}{% endblock %}
+
+{% block content %}
 <h1>Discussion sections</h1>
 
-<hr>
-    <p> create a new message chain </p>
-    <form action="/new_chain/{{id}}" method="POST">
-        <input type="text" placeholder="Type message chain header" name="header">
-        <input type="submit" value="create">
-    </form>
-<hr>
+<p> create a new message chain </p>
+<form action="#" method="POST">
+    <input type="text" placeholder="Message chain header" name="header" size="80" maxlength="100" required>
+    <input type="submit" value="create">
+</form>
 <br\>
 
 <hr>
 {% for message_chain in message_chains %}
-<a href="/message_chain/{{message_chain.id}}">{{message_chain.header}}</a>
+<p><a href="/message_chain/{{message_chain.id}}">{{message_chain.header}}</a> created by {{message_chain.username}}</p>
+{% if  %}
+<p>delete</p>
+{% endif %}
 <hr>
 {% endfor %}
+{% endblock %}

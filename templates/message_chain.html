@@ -1,9 +1,13 @@
+{% extends "base.html" %}
+{% block user_id %}{{user_id}}{% endblock %}
+
+{% block content %}
 <h1>Message chain</h1>
 
 <hr>
     <p> comment: </p>
-    <form action="/new_message/{{id}}" method="POST">
-        <textarea name="message" placeholder="Type new message here"  rows="3" cols="45"></textarea>
+    <form action="#" method="POST">
+        <textarea name="message" placeholder="Type new message here"  rows="3" cols="45" maxlength="1000" required></textarea>
         <input type="submit" value="post">
     </form>
 <hr>
@@ -12,6 +16,7 @@
 <hr>
 {% for message in messages %}
     <p>{{message.content}}</p>
-    <p class="meta">{{message.posting_date}}</p>
+    <p class="meta">{{message[1]}}</p>
 <hr>
 {% endfor %}
+{% endblock %}

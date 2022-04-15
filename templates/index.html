@@ -1,9 +1,11 @@
+{% extends "base.html" %}
+{% block logged %}{{logged}}{% endblock %}
+{% block content %}
 <h1>Discussion sections</h1>
-
 
 <hr>
     {% for area in areas %}
     <a href="area/{{area.id}}">{{area.name}}</a>
 <hr>
 {% endfor %}
-
+{% endblock %}
