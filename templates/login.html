@@ -3,16 +3,18 @@
 
 {% block content %}
 
-{% if user_id != 0 %}
-<p> Log-in </p>
+{% if not logged==True %}
+<h2>Login</h2>
 <form action="#" method="POST">
-    <input type="text" placeholder="username" name="username" maxlength="15" requried>
-    <input type="password" placeholder="password" name="password" maxlength="20" required>
-    <input type="submit" value="Login">
+    <input class="form-control mr-sm-2" type="text" placeholder="username" name="username" maxlength="15" requried>
+    <input class="form-control mr-sm-2" type="password" placeholder="password" name="password" maxlength="20" required>
+    <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Login">
 </form>
 <br>
-<a href="/signup">Create an account</a>
+<a class="badge badge-success" href="/signup">Create an account</a>
 {% else %}
 <p> Already logged in</p>
 {% endif %}
+</br>
+<small>For moderator privileges please log in with username: aare password: aare</small>
 {% endblock %}

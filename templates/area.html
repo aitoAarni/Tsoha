@@ -2,21 +2,32 @@
 {% block user_id %}{{user_id}}{% endblock %}
 
 {% block content %}
-<h1>Discussion sections</h1>
-
-<p> create a new message chain </p>
+<h1>Discussion Area: <span class="badge badge-secondary">{{name}}</span></h1>
+</br>
 <form action="#" method="POST">
-    <input type="text" placeholder="Message chain header" name="header" size="80" maxlength="100" required>
-    <input type="submit" value="create">
+    <div class="input-group mb-3">
+        <input class="form-control" type="text" placeholder="Message chain header" name="header"
+             maxlength="100" required minlength="1" required>
+        <div class="input-group-append">
+            <input class="btn btn-outline-dark" type="submit" value="Create">
+        </div>
+      </div>
 </form>
-<br\>
 
-<hr>
+
+</br>
+
 {% for message_chain in message_chains %}
-<p><a href="/message_chain/{{message_chain.id}}">{{message_chain.header}}</a> created by {{message_chain.username}}</p>
-{% if message_chain.owned %}
-<p>delete</p>
-{% endif %}
-<hr>
-{% endfor %}
+<div class="list-group-item list-group-item-action">
+    <a href="/message_chain/{{message_chain.id}}">{{message_chain.header}}</a>
+    </br>
+    <small>Created by {{message_chain.username}}</small>
+    {% if message_chain.owned %}
+    <p>
+    <a class="badge badge-danger" href="{{ url_for('delete_chain', area_id=id, chain_id=message_chain.id) }}">delete</a>
+    <a class="badge badge-primary" href="{{ url_for('edit_chain', area_id=id, chain_id=message_chain.id) }}">edit</a>
+    </p>
+        {% endif %}
+</div>
+    {% endfor %}
 {% endblock %}

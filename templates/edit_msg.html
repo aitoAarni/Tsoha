@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block user_id %}{{user_id}}{% endblock %}
+
+{% block content %}
+<form action="#" method="POST">
+    <textarea class="form-control" name="content" rows="3" cols="45" maxlength="1000" required>{{msg.content}}</textarea>
+    <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="edit">
+</form>
+{% endblock %}

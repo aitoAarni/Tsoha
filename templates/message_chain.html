@@ -1,23 +1,33 @@
 {% extends "base.html" %}
 {% block user_id %}{{user_id}}{% endblock %}
 
-{% block content %}
-<h1>Message chain</h1>
+{% block side %}
 
-    <p> comment: </p>
+{% endblock %}
+
+{% block content %}
+<h1>Message chain: <span class="badge badge-secondary">{{header}}</span></h1>
+    <a class="badge badge-light" href="{{ url_for('areas', id=previous_page.area_id) }}">Back to: {{previous_page.name}}</a>
+    </br>
+    </br>
     <form action="#" method="POST">
-        <textarea name="message" placeholder="Type new message here"  rows="3" cols="45" maxlength="1000" required></textarea>
-        <input type="submit" value="post">
+        <textarea class="form-control" rows="5" placeholder="Type new message here" name="message"
+                maxlength="1000" required minlength="1"></textarea>
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Post">
+
     </form>
 <br\>
 
-<hr>
 {% for message in messages %}
+<div class="list-group-item list-group-item-action">    
     <p>{{message.content}}</p>
-    <p class="meta"> sent by {{message.username}} at {{message[1]}}</p>
+    <small>sent by {{message.username}} at {{message.time}}</small>
     {% if message.owned %}
-    <p>delete</p>
+    <p>
+    <a class="badge badge-danger" href="{{ url_for('delete_message', chain_id=id, msg_id=message.msg_id) }}">delete</a>
+    <a class="badge badge-primary" href="{{ url_for('edit_message', chain_id=id, msg_id=message.msg_id) }}">edit</a>
+    </p>
     {% endif %}
-<hr>
+</div>
 {% endfor %}
 {% endblock %}

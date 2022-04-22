@@ -1,15 +1,48 @@
 <!DOCTYPE html>
+<head>
+    <title>Tsoha App</title>
+</head>
 <html>
-    {% if not logged %}
-    <form action="/login" method="POST">
-        <input type="submit" value="login">
-    </form>
-    {% else %}
-    <form action="/logout" method="POST">
-        <input type="submit" value="logout">
-    </form>
-    <p>{% block logged %} {% endblock %}</p>
-    {% endif %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Discussion Areas</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+              <form class="form-inline my-2 my-lg-0" action="/search" method="POST">
+                <input name="message" class="form-control mr-sm-2" type="text" 
+                placeholder="Search for a message" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+            </li>
+          </ul>
 
-    {% block content %} {% endblock %}
+
+          {% if not logged %}
+          <form action="/login" method="POST">
+              <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="login">
+          </form>
+          {% else %}
+          <form action="/logout" method="POST">
+              <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="logout">
+          </form>
+          {% endif %}      
+        </div>
+      </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-1">
+                {% block side %} {% endblock %}
+            </div>
+
+            <div class="col-11">
+            {% block content %} {% endblock %}
+            </div>
+        </div>
+    </div>
+    
 </html>

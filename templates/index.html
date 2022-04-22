@@ -2,10 +2,30 @@
 {% block logged %}{{logged}}{% endblock %}
 {% block content %}
 <h1>Discussion sections</h1>
+</br>
+{% if moderator==True %}
+<form action="#" method="POST">
+    <div class="input-group mb-3">
+        <input class="form-control" type="text" placeholder="Name a new message area" name="area"
+     size="30" maxlength="20" required minlength="1">
+        <div class="input-group-append">
+            <input class="btn btn-outline-dark" type="submit" value="Create">
+        </div>
+      </div>
+</form>
 
-<hr>
+
+{% endif %}
+</br>
     {% for area in areas %}
-    <a href="area/{{area.id}}">{{area.name}}</a>
-<hr>
+    <div class="list-group-item list-group-item-action">
+        <a href="area/{{area.id}}">{{area.name}}</a>
+        <p>Amount of message chains: {{area.chain_count}}
+        </br>Amount of messages: {{area.msg_count}}
+        </br>Last message sent at: {{area.time}}</p>
+        {% if moderator==True %}
+        <a class="badge badge-pill badge-danger" href="{{ url_for('delete_area', id=area.id) }}">Delete</a>
+        {% endif %}
+    </div>
 {% endfor %}
 {% endblock %}
