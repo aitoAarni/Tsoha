@@ -8,14 +8,15 @@
 {% block content %}
 <h1>Message chain: <span class="badge badge-secondary">{{header}}</span></h1>
     <a class="badge badge-light" href="{{ url_for('areas', id=previous_page.area_id) }}">Back to: {{previous_page.name}}</a>
-    </br>
-    </br>
+</br>
+</br>
+    {% if user_id==True %}
     <form action="#" method="POST">
         <textarea class="form-control" rows="5" placeholder="Type new message here" name="message"
                 maxlength="1000" required minlength="1"></textarea>
             <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Post">
-
     </form>
+    {% endif %}
 <br\>
 
 {% for message in messages %}
