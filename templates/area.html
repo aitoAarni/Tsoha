@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block user_id %}{{user_id}}{% endblock %}
+{% block logged %}{{logged}}{% endblock %}
 
 {% block content %}
 <h1>Discussion Area: <span class="badge badge-secondary">{{name}}</span></h1>
 </br>
-{% if user_id==True %}
+{% if logged==True %}
 <form action="#" method="POST">
     <div class="input-group mb-3">
         <input class="form-control" type="text" placeholder="Message chain header" name="header"
