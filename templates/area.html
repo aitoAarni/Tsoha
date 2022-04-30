@@ -1,10 +1,11 @@
 {% extends "base.html" %}
-{% block logged %}{{logged}}{% endblock %}
+{% block logged %}{{ session.logged }}{% endblock %}
 
 {% block content %}
+<p> {{ session.logged }}</p>
 <h1>Discussion Area: <span class="badge badge-secondary">{{name}}</span></h1>
 </br>
-{% if logged==True %}
+{% if session.logged==True %}
 <form action="#" method="POST">
     <div class="input-group mb-3">
         <input class="form-control" type="text" placeholder="Message chain header" name="header"
@@ -12,6 +13,8 @@
         <div class="input-group-append">
             <input class="btn btn-outline-dark" type="submit" value="Create">
         </div>
+        <input type="hidden" name="csrf_token" value={{ session.csrf_token }}>
+
       </div>
 </form>
 {% endif %}

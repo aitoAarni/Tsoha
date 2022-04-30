@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block logged %}{{logged}}{% endblock %}
+{% block logged %}{{ session.logged }}{% endblock %}
 
 {% block content %}
 <h1>Discussion sections</h1>
@@ -12,6 +12,7 @@
         <div class="input-group-append">
             <input class="btn btn-outline-dark" type="submit" value="Create">
         </div>
+        <input type="hidden" name="csrf_token" value={{ session.csrf_token }}>
       </div>
 </form>
 

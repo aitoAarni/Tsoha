@@ -17,18 +17,20 @@
                 <input name="message" class="form-control mr-sm-2" type="text" 
                 placeholder="Search for a message" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
               </form>
             </li>
           </ul>
 
 
-          {% if not logged %}
+          {% if not session.logged %}
           <form action="/login" method="POST">
               <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="login">
           </form>
           {% else %}
           <form action="/logout" method="POST">
               <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="logout">
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
           </form>
           {% endif %}      
         </div>

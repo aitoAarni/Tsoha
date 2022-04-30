@@ -1,14 +1,15 @@
 {% extends "base.html" %}
-{% block logged %}{{logged}}{% endblock %}
+{% block logged %}{{ session.logged }}{% endblock %}
 
 {% block content %}
 
-{% if not logged==True %}
+{% if not session.logged==True %}
 <h2>Login</h2>
 <form action="#" method="POST">
     <input class="form-control mr-sm-2" type="text" placeholder="username" name="username" maxlength="15" requried>
     <input class="form-control mr-sm-2" type="password" placeholder="password" name="password" maxlength="20" required>
     <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Login">
+    <input type="hidden" name="csrf_token" value={{ session.csrf_token }}>
 </form>
 <br>
 <a class="badge badge-success" href="/signup">Create an account</a>
