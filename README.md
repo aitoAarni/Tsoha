@@ -8,8 +8,6 @@
 - Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
 - Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
 
-## Välipalautus 2
+
 - testattavissa: https://communicationarea.herokuapp.com/
-- sivustolla voi aiheita
-- voi luoda keskustelu ketjuja
-- ketjuihin voi lähettää viestejä
+
